@@ -877,19 +877,21 @@ class QuickPick<T extends IQuickPickItem> extends QuickInput implements IQuickPi
 					return true;
 				}
 
+				let anyStillPressed = false;
+
 				if (firstPart.altKey && keyCode === KeyCode.Alt) {
-					return true;
+					anyStillPressed = keyboardEvent.ctrlKey || keyboardEvent.metaKey;
 				}
 
 				if (firstPart.ctrlKey && keyCode === KeyCode.Ctrl) {
-					return true;
+					anyStillPressed = keyboardEvent.altKey || keyboardEvent.metaKey;
 				}
 
 				if (firstPart.metaKey && keyCode === KeyCode.Meta) {
-					return true;
+					anyStillPressed = keyboardEvent.ctrlKey || keyboardEvent.altKey;
 				}
 
-				return false;
+				return !anyStillPressed;
 			});
 
 			if (wasTriggerKeyPressed) {
