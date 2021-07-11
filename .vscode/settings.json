@@ -21,6 +21,7 @@
 		"out/**": true,
 		"out-build/**": true,
 		"out-vscode/**": true,
+		"out-vscode-min/**": true,
 		"i18n/**": true,
 		"extensions/**/out/**": true,
 		"test/smoke/out/**": true,
