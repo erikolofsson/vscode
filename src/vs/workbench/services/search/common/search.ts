@@ -375,6 +375,7 @@ export interface ISearchConfigurationProperties {
 	maxResults: number | null;
 	collapseResults: 'auto' | 'alwaysCollapse' | 'alwaysExpand';
 	searchOnType: boolean;
+	keepInSyncWithFindWidget: boolean;
 	seedOnFocus: boolean;
 	seedWithNearestWord: boolean;
 	searchOnTypeDebouncePeriod: number;

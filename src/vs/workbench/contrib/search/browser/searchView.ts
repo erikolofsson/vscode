@@ -442,7 +442,10 @@ export class SearchView extends ViewPane {
 
 		const updateHasPatternKey = () => this.hasSearchPatternKey.set(this.searchWidget.searchInput.getValue().length > 0);
 		updateHasPatternKey();
-		this._register(this.searchWidget.searchInput.onDidChange(() => updateHasPatternKey()));
+		this._register(this.searchWidget.searchInput.onDidChange(() => {
+			updateHasPatternKey();
+			this.syncConfigToFindWidget(false);
+		}));
 
 		const updateHasReplacePatternKey = () => this.hasReplacePatternKey.set(this.searchWidget.getReplaceValue().length > 0);
 		updateHasReplacePatternKey();
@@ -911,6 +914,14 @@ export class SearchView extends ViewPane {
 
 	updateTextFromFindWidgetOrSelection({ allowUnselectedWord = true, allowSearchOnType = true }): boolean {
 		let activeEditor = this.editorService.activeTextEditorControl;
+
+		if (this.searchConfig.keepInSyncWithFindWidget) {
+			if (isCodeEditor(activeEditor)) {
+				const controller = CommonFindController.get(activeEditor as ICodeEditor);
+				return this.updateTextFromFindWidget(controller, { allowSearchOnType, force: true });
+			}
+		}
+
 		if (isCodeEditor(activeEditor) && !activeEditor?.hasTextFocus()) {
 			const controller = CommonFindController.get(activeEditor as ICodeEditor);
 			if (controller.isFindInputFocused()) {
@@ -925,8 +936,8 @@ export class SearchView extends ViewPane {
 		return this.updateTextFromSelection({ allowUnselectedWord, allowSearchOnType }, activeEditor);
 	}
 
-	private updateTextFromFindWidget(controller: CommonFindController, { allowSearchOnType = true }): boolean {
-		if (!this.searchConfig.seedWithNearestWord && (window.getSelection()?.toString() ?? '') === '') {
+	private updateTextFromFindWidget(controller: CommonFindController, { allowSearchOnType = true, force = false }): boolean {
+		if (!force && !this.searchConfig.seedWithNearestWord && (window.getSelection()?.toString() ?? '') === '') {
 			return false;
 		}
 
@@ -1289,8 +1300,35 @@ export class SearchView extends ViewPane {
 		this.searchWidget.focus(false);
 	}
 
+	syncConfigToFindWidget(updateHistory: boolean) {
+		if (!this.searchConfig.keepInSyncWithFindWidget) {
+			return;
+		}
+
+		let activeEditor = this.editorService.activeTextEditorControl;
+		if (isCodeEditor(activeEditor)) {
+			const controllerState = CommonFindController.get(activeEditor as ICodeEditor).getState();
+			const searchInput = this.searchWidget.searchInput;
+
+			controllerState.change(
+				{
+					searchString: searchInput.getValue(),
+					wholeWord: searchInput.getWholeWords(),
+					matchCase: searchInput.getCaseSensitive(),
+					isRegex: searchInput.getRegex()
+				},
+				false,
+				updateHistory
+			);
+		}
+	}
+
 	triggerQueryChange(_options?: { preserveFocus?: boolean, triggeredOnType?: boolean, delay?: number }) {
 		const options = { preserveFocus: true, triggeredOnType: false, delay: 0, ..._options };
+
+		if (!options.triggeredOnType) {
+			this.syncConfigToFindWidget(true);
+		}
 
 		if (options.triggeredOnType && !this.searchConfig.searchOnType) { return; }
 

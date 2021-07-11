@@ -970,6 +970,11 @@ configurationRegistry.registerConfiguration({
 			default: true,
 			description: nls.localize('search.searchOnType', "Search all files as you type.")
 		},
+		'search.keepInSyncWithFindWidget': {
+			type: 'boolean',
+			default: false,
+			description: nls.localize('search.keepInSyncWithFindWidget', "Keep find widget and search configuration in sync.")
+		},
 		'search.seedWithNearestWord': {
 			type: 'boolean',
 			default: false,
