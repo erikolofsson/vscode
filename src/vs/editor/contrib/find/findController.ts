@@ -68,6 +68,7 @@ export interface IFindStartOptions {
 	shouldAnimate: boolean;
 	updateSearchScope: boolean;
 	loop: boolean;
+	reveal: boolean;
 }
 
 export class CommonFindController extends Disposable implements IEditorContribution {
@@ -132,7 +133,8 @@ export class CommonFindController extends Disposable implements IEditorContribut
 					shouldFocus: FindStartFocusAction.NoFocusChange,
 					shouldAnimate: false,
 					updateSearchScope: false,
-					loop: this._editor.getOption(EditorOption.find).loop
+					loop: this._editor.getOption(EditorOption.find).loop,
+					reveal: this._state.isRevealed
 				});
 			}
 		}));
@@ -280,7 +282,7 @@ export class CommonFindController extends Disposable implements IEditorContribut
 		}
 
 		let stateChanges: INewFindReplaceState = {
-			isRevealed: true
+			isRevealed: opts.reveal
 		};
 
 		if (opts.seedSearchStringFromSelection === 'single') {
@@ -513,7 +515,8 @@ StartFindAction.addImplementation(0, (accessor: ServicesAccessor, editor: ICodeE
 		shouldFocus: FindStartFocusAction.FocusFindInput,
 		shouldAnimate: true,
 		updateSearchScope: false,
-		loop: editor.getOption(EditorOption.find).loop
+		loop: editor.getOption(EditorOption.find).loop,
+		reveal: true
 	});
 });
 
@@ -546,7 +549,8 @@ export class StartFindWithSelectionAction extends EditorAction {
 				shouldFocus: FindStartFocusAction.NoFocusChange,
 				shouldAnimate: true,
 				updateSearchScope: false,
-				loop: editor.getOption(EditorOption.find).loop
+				loop: editor.getOption(EditorOption.find).loop,
+				reveal: editor.getOption(EditorOption.find).automaticallyDisplayFindWidget
 			});
 
 			controller.setGlobalBufferTerm(controller.getState().searchString);
@@ -564,7 +568,8 @@ export abstract class MatchFindAction extends EditorAction {
 				shouldFocus: FindStartFocusAction.NoFocusChange,
 				shouldAnimate: true,
 				updateSearchScope: false,
-				loop: editor.getOption(EditorOption.find).loop
+				loop: editor.getOption(EditorOption.find).loop,
+				reveal: editor.getOption(EditorOption.find).automaticallyDisplayFindWidget
 			});
 			this._run(controller);
 		}
@@ -650,7 +655,8 @@ export abstract class SelectionMatchFindAction extends EditorAction {
 				shouldFocus: FindStartFocusAction.NoFocusChange,
 				shouldAnimate: true,
 				updateSearchScope: false,
-				loop: editor.getOption(EditorOption.find).loop
+				loop: editor.getOption(EditorOption.find).loop,
+				reveal: editor.getOption(EditorOption.find).automaticallyDisplayFindWidget
 			});
 			this._run(controller);
 		}
@@ -753,7 +759,8 @@ StartFindReplaceAction.addImplementation(0, (accessor: ServicesAccessor, editor:
 		shouldFocus: shouldFocus,
 		shouldAnimate: true,
 		updateSearchScope: false,
-		loop: editor.getOption(EditorOption.find).loop
+		loop: editor.getOption(EditorOption.find).loop,
+		reveal: true
 	});
 });
 

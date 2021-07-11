@@ -1361,10 +1361,14 @@ export interface IEditorFindOptions {
 	 * Controls if Find in Selection flag is turned on in the editor.
 	 */
 	autoFindInSelection?: 'never' | 'always' | 'multiline';
-	/*
+	/**
 	 * Controls whether the Find Widget should add extra lines on top of the editor.
 	 */
 	addExtraSpaceOnTop?: boolean;
+	/**
+	* Controls whether the Find Widget should be automatically displayed.
+	*/
+	automaticallyDisplayFindWidget?: boolean;
 	/**
 	 * @internal
 	 * Controls if the Find Widget should read or modify the shared find clipboard on macOS
@@ -1387,6 +1391,7 @@ class EditorFind extends BaseEditorOption<EditorOption.find, EditorFindOptions> 
 			autoFindInSelection: 'never',
 			globalFindClipboard: false,
 			addExtraSpaceOnTop: true,
+			automaticallyDisplayFindWidget: true,
 			loop: true
 		};
 		super(
@@ -1424,6 +1429,11 @@ class EditorFind extends BaseEditorOption<EditorOption.find, EditorFindOptions> 
 					default: defaults.addExtraSpaceOnTop,
 					description: nls.localize('find.addExtraSpaceOnTop', "Controls whether the Find Widget should add extra lines on top of the editor. When true, you can scroll beyond the first line when the Find Widget is visible.")
 				},
+				'editor.find.automaticallyDisplayFindWidget': {
+					type: 'boolean',
+					default: defaults.automaticallyDisplayFindWidget,
+					description: nls.localize('find.automaticallyDisplayFindWidget', "Controls whether the Find Widget should be automatically displayed. When false, the find widget will only be displayed when explicitly opening it.")
+				},
 				'editor.find.loop': {
 					type: 'boolean',
 					default: defaults.loop,
@@ -1447,6 +1457,7 @@ class EditorFind extends BaseEditorOption<EditorOption.find, EditorFindOptions> 
 				: stringSet<'never' | 'always' | 'multiline'>(input.autoFindInSelection, this.defaultValue.autoFindInSelection, ['never', 'always', 'multiline']),
 			globalFindClipboard: boolean(input.globalFindClipboard, this.defaultValue.globalFindClipboard),
 			addExtraSpaceOnTop: boolean(input.addExtraSpaceOnTop, this.defaultValue.addExtraSpaceOnTop),
+			automaticallyDisplayFindWidget: boolean(input.automaticallyDisplayFindWidget, this.defaultValue.automaticallyDisplayFindWidget),
 			loop: boolean(input.loop, this.defaultValue.loop),
 		};
 	}

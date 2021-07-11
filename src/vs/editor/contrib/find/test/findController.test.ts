@@ -288,7 +288,8 @@ suite('FindController', async () => {
 				shouldFocus: FindStartFocusAction.FocusFindInput,
 				shouldAnimate: false,
 				updateSearchScope: false,
-				loop: true
+				loop: true,
+				reveal: true
 			});
 			await nextMatchFindAction.run(null, editor);
 			await executeAction(instantiationService, editor, StartFindReplaceAction);
@@ -314,7 +315,8 @@ suite('FindController', async () => {
 				shouldFocus: FindStartFocusAction.NoFocusChange,
 				shouldAnimate: false,
 				updateSearchScope: false,
-				loop: true
+				loop: true,
+				reveal: true
 			});
 
 			assert.strictEqual(findController.getState().searchScope, null);
@@ -595,7 +597,8 @@ suite('FindController query options persistence', async () => {
 				shouldFocus: FindStartFocusAction.NoFocusChange,
 				shouldAnimate: false,
 				updateSearchScope: true,
-				loop: true
+				loop: true,
+				reveal: true
 			};
 
 			editor.setSelection(new Range(1, 1, 2, 1));
@@ -627,7 +630,8 @@ suite('FindController query options persistence', async () => {
 				shouldFocus: FindStartFocusAction.NoFocusChange,
 				shouldAnimate: false,
 				updateSearchScope: true,
-				loop: true
+				loop: true,
+				reveal: true
 			});
 
 			assert.deepStrictEqual(findController.getState().searchScope, null);
@@ -651,7 +655,8 @@ suite('FindController query options persistence', async () => {
 				shouldFocus: FindStartFocusAction.NoFocusChange,
 				shouldAnimate: false,
 				updateSearchScope: true,
-				loop: true
+				loop: true,
+				reveal: true
 			});
 
 			assert.deepStrictEqual(findController.getState().searchScope, [new Selection(1, 2, 1, 3)]);
@@ -676,7 +681,8 @@ suite('FindController query options persistence', async () => {
 				shouldFocus: FindStartFocusAction.NoFocusChange,
 				shouldAnimate: false,
 				updateSearchScope: true,
-				loop: true
+				loop: true,
+				reveal: true
 			});
 
 			assert.deepStrictEqual(findController.getState().searchScope, [new Selection(1, 6, 2, 1)]);

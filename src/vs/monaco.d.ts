@@ -3440,7 +3440,14 @@ declare namespace monaco.editor {
 		 * Controls if Find in Selection flag is turned on in the editor.
 		 */
 		autoFindInSelection?: 'never' | 'always' | 'multiline';
+		/**
+		 * Controls whether the Find Widget should add extra lines on top of the editor.
+		 */
 		addExtraSpaceOnTop?: boolean;
+		/**
+		* Controls whether the Find Widget should be automatically displayed.
+		*/
+		automaticallyDisplayFindWidget?: boolean;
 		/**
 		 * Controls whether the search automatically restarts from the beginning (or the end) when no further matches can be found
 		 */
