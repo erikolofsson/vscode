@@ -1370,6 +1370,10 @@ export interface IEditorFindOptions {
 	*/
 	automaticallyDisplayFindWidget?: boolean;
 	/**
+	* Controls whether the Find Widget should be animated.
+	*/
+	animateWidget?: boolean;
+	/**
 	 * @internal
 	 * Controls if the Find Widget should read or modify the shared find clipboard on macOS
 	 */
@@ -1392,6 +1396,7 @@ class EditorFind extends BaseEditorOption<EditorOption.find, EditorFindOptions> 
 			globalFindClipboard: false,
 			addExtraSpaceOnTop: true,
 			automaticallyDisplayFindWidget: true,
+			animateWidget: true,
 			loop: true
 		};
 		super(
@@ -1434,6 +1439,11 @@ class EditorFind extends BaseEditorOption<EditorOption.find, EditorFindOptions> 
 					default: defaults.automaticallyDisplayFindWidget,
 					description: nls.localize('find.automaticallyDisplayFindWidget', "Controls whether the Find Widget should be automatically displayed. When false, the find widget will only be displayed when explicitly opening it.")
 				},
+				'editor.find.animateWidget': {
+					type: 'boolean',
+					default: defaults.animateWidget,
+					description: nls.localize('find.animateWidget', "Controls whether the Find Widget should be animated.")
+				},
 				'editor.find.loop': {
 					type: 'boolean',
 					default: defaults.loop,
@@ -1458,6 +1468,7 @@ class EditorFind extends BaseEditorOption<EditorOption.find, EditorFindOptions> 
 			globalFindClipboard: boolean(input.globalFindClipboard, this.defaultValue.globalFindClipboard),
 			addExtraSpaceOnTop: boolean(input.addExtraSpaceOnTop, this.defaultValue.addExtraSpaceOnTop),
 			automaticallyDisplayFindWidget: boolean(input.automaticallyDisplayFindWidget, this.defaultValue.automaticallyDisplayFindWidget),
+			animateWidget: boolean(input.animateWidget, this.defaultValue.animateWidget),
 			loop: boolean(input.loop, this.defaultValue.loop),
 		};
 	}

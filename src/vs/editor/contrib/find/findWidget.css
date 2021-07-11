@@ -10,10 +10,14 @@
 	height: 33px;
 	overflow: hidden;
 	line-height: 19px;
-	transition: transform 200ms linear;
+	transition: transform 0ms linear;
 	padding: 0 4px;
 	box-sizing: border-box;
 	transform: translateY(calc(-100% - 10px)); /* shadow (10px) */
+}
+
+.monaco-editor .find-widget.animate {
+	transition: transform 200ms linear;
 }
 
 .monaco-editor .find-widget textarea {

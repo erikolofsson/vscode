@@ -517,8 +517,15 @@ export class FindWidget extends Widget implements IOverlayWidget, IVerticalSashL
 			this._tryUpdateWidgetWidth();
 			this._updateButtons();
 
+			const shouldAnimate = this._state.shouldAnimate;
+
 			this._revealTimeouts.push(setTimeout(() => {
 				this._domNode.classList.add('visible');
+				if (shouldAnimate) {
+					this._domNode.classList.add('animate');
+				} else {
+					this._domNode.classList.remove('animate');
+				}
 				this._domNode.setAttribute('aria-hidden', 'false');
 			}, 0));
 

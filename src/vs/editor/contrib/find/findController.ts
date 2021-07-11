@@ -131,7 +131,7 @@ export class CommonFindController extends Disposable implements IEditorContribut
 					seedSearchStringFromSelection: 'none',
 					seedSearchStringFromGlobalClipboard: false,
 					shouldFocus: FindStartFocusAction.NoFocusChange,
-					shouldAnimate: false,
+					shouldAnimate: this._state.shouldAnimate,
 					updateSearchScope: false,
 					loop: this._editor.getOption(EditorOption.find).loop,
 					reveal: this._state.isRevealed
@@ -329,6 +329,7 @@ export class CommonFindController extends Disposable implements IEditorContribut
 		}
 
 		stateChanges.loop = opts.loop;
+		stateChanges.shouldAnimate = opts.shouldAnimate;
 
 		this._state.change(stateChanges, false);
 
@@ -513,7 +514,7 @@ StartFindAction.addImplementation(0, (accessor: ServicesAccessor, editor: ICodeE
 		seedSearchStringFromSelection: editor.getOption(EditorOption.find).seedSearchStringFromSelection ? 'single' : 'none',
 		seedSearchStringFromGlobalClipboard: editor.getOption(EditorOption.find).globalFindClipboard,
 		shouldFocus: FindStartFocusAction.FocusFindInput,
-		shouldAnimate: true,
+		shouldAnimate: editor.getOption(EditorOption.find).animateWidget,
 		updateSearchScope: false,
 		loop: editor.getOption(EditorOption.find).loop,
 		reveal: true
@@ -547,7 +548,7 @@ export class StartFindWithSelectionAction extends EditorAction {
 				seedSearchStringFromSelection: 'multiple',
 				seedSearchStringFromGlobalClipboard: false,
 				shouldFocus: FindStartFocusAction.NoFocusChange,
-				shouldAnimate: true,
+				shouldAnimate: editor.getOption(EditorOption.find).animateWidget,
 				updateSearchScope: false,
 				loop: editor.getOption(EditorOption.find).loop,
 				reveal: editor.getOption(EditorOption.find).automaticallyDisplayFindWidget
@@ -566,7 +567,7 @@ export abstract class MatchFindAction extends EditorAction {
 				seedSearchStringFromSelection: (controller.getState().searchString.length === 0) && editor.getOption(EditorOption.find).seedSearchStringFromSelection ? 'single' : 'none',
 				seedSearchStringFromGlobalClipboard: true,
 				shouldFocus: FindStartFocusAction.NoFocusChange,
-				shouldAnimate: true,
+				shouldAnimate: editor.getOption(EditorOption.find).animateWidget,
 				updateSearchScope: false,
 				loop: editor.getOption(EditorOption.find).loop,
 				reveal: editor.getOption(EditorOption.find).automaticallyDisplayFindWidget
@@ -653,7 +654,7 @@ export abstract class SelectionMatchFindAction extends EditorAction {
 				seedSearchStringFromSelection: editor.getOption(EditorOption.find).seedSearchStringFromSelection ? 'single' : 'none',
 				seedSearchStringFromGlobalClipboard: false,
 				shouldFocus: FindStartFocusAction.NoFocusChange,
-				shouldAnimate: true,
+				shouldAnimate: editor.getOption(EditorOption.find).animateWidget,
 				updateSearchScope: false,
 				loop: editor.getOption(EditorOption.find).loop,
 				reveal: editor.getOption(EditorOption.find).automaticallyDisplayFindWidget
@@ -757,7 +758,7 @@ StartFindReplaceAction.addImplementation(0, (accessor: ServicesAccessor, editor:
 		seedSearchStringFromSelection: seedSearchStringFromSelection ? 'single' : 'none',
 		seedSearchStringFromGlobalClipboard: editor.getOption(EditorOption.find).seedSearchStringFromSelection,
 		shouldFocus: shouldFocus,
-		shouldAnimate: true,
+		shouldAnimate: editor.getOption(EditorOption.find).animateWidget,
 		updateSearchScope: false,
 		loop: editor.getOption(EditorOption.find).loop,
 		reveal: true

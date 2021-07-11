@@ -25,6 +25,7 @@ export interface FindReplaceStateChangedEvent {
 	matchesCount: boolean;
 	currentMatch: boolean;
 	loop: boolean;
+	shouldAnimate: boolean;
 }
 
 export const enum FindOptionOverride {
@@ -48,6 +49,7 @@ export interface INewFindReplaceState {
 	preserveCaseOverride?: FindOptionOverride;
 	searchScope?: Range[] | null;
 	loop?: boolean;
+	shouldAnimate?: boolean;
 }
 
 function effectiveOptionValue(override: FindOptionOverride, value: boolean): boolean {
@@ -78,11 +80,13 @@ export class FindReplaceState extends Disposable {
 	private _matchesCount: number;
 	private _currentMatch: Range | null;
 	private _loop: boolean;
+	private _shouldAnimate: boolean;
 	private readonly _onFindReplaceStateChange = this._register(new Emitter<FindReplaceStateChangedEvent>());
 
 	public get searchString(): string { return this._searchString; }
 	public get replaceString(): string { return this._replaceString; }
 	public get isRevealed(): boolean { return this._isRevealed; }
+	public get shouldAnimate(): boolean { return this._shouldAnimate; }
 	public get isReplaceRevealed(): boolean { return this._isReplaceRevealed; }
 	public get isRegex(): boolean { return effectiveOptionValue(this._isRegexOverride, this._isRegex); }
 	public get wholeWord(): boolean { return effectiveOptionValue(this._wholeWordOverride, this._wholeWord); }
@@ -119,6 +123,7 @@ export class FindReplaceState extends Disposable {
 		this._matchesCount = 0;
 		this._currentMatch = null;
 		this._loop = true;
+		this._shouldAnimate = false;
 	}
 
 	public changeMatchInfo(matchesPosition: number, matchesCount: number, currentMatch: Range | undefined): void {
@@ -137,7 +142,8 @@ export class FindReplaceState extends Disposable {
 			matchesPosition: false,
 			matchesCount: false,
 			currentMatch: false,
-			loop: false
+			loop: false,
+			shouldAnimate: false,
 		};
 		let somethingChanged = false;
 
@@ -188,7 +194,8 @@ export class FindReplaceState extends Disposable {
 			matchesPosition: false,
 			matchesCount: false,
 			currentMatch: false,
-			loop: false
+			loop: false,
+			shouldAnimate: false,
 		};
 		let somethingChanged = false;
 
@@ -252,6 +259,13 @@ export class FindReplaceState extends Disposable {
 			if (this._loop !== newState.loop) {
 				this._loop = newState.loop;
 				changeEvent.loop = true;
+				somethingChanged = true;
+			}
+		}
+		if (typeof newState.shouldAnimate !== 'undefined') {
+			if (this._shouldAnimate !== newState.shouldAnimate) {
+				this._shouldAnimate = newState.shouldAnimate;
+				changeEvent.shouldAnimate = true;
 				somethingChanged = true;
 			}
 		}

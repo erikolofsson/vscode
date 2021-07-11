@@ -3449,6 +3449,10 @@ declare namespace monaco.editor {
 		*/
 		automaticallyDisplayFindWidget?: boolean;
 		/**
+		* Controls whether the Find Widget should be animated.
+		*/
+		animateWidget?: boolean;
+		/**
 		 * Controls whether the search automatically restarts from the beginning (or the end) when no further matches can be found
 		 */
 		loop?: boolean;
