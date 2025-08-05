@@ -34,6 +34,7 @@ class MessageWidget {
 
 	private _lines: number = 0;
 	private _longestLineLength: number = 0;
+	private _extraHeight: number = 0;
 
 	private readonly _editor: ICodeEditor;
 	private readonly _messageBlock: HTMLDivElement;
@@ -92,7 +93,7 @@ class MessageWidget {
 	}
 
 	update(marker: IMarker): void {
-		const { source, message, relatedInformation, code } = marker;
+		const { source, message, relatedInformation, subProblems, code } = marker;
 		let sourceAndCodeLength = (source?.length || 0) + '()'.length;
 		if (code) {
 			if (typeof code === 'string') {
@@ -105,6 +106,7 @@ class MessageWidget {
 		const lines = splitLines(message);
 		this._lines = lines.length;
 		this._longestLineLength = 0;
+		this._extraHeight = 0;
 		for (const line of lines) {
 			this._longestLineLength = Math.max(line.length + sourceAndCodeLength, this._longestLineLength);
 		}
@@ -182,9 +184,59 @@ class MessageWidget {
 			}
 		}
 
+		// Display subProblems grouped by category
+		if (subProblems && subProblems.length > 0) {
+			const subProblemsNode = this._relatedBlock.appendChild(document.createElement('div'));
+			const subProblemsPadding = Math.floor(this._editor.getOption(EditorOption.lineHeight) * 0.66);
+			subProblemsNode.style.paddingTop = `${subProblemsPadding}px`;
+			this._lines += 1;
+			this._extraHeight += subProblemsPadding; // Account for the padding-top
+
+			for (const categoryGroup of subProblems) {
+				// Add category header
+				const categoryHeader = document.createElement('div');
+				categoryHeader.style.fontWeight = 'bold';
+				categoryHeader.style.marginTop = '4px';
+				categoryHeader.innerText = `${categoryGroup.category}:`;
+				subProblemsNode.appendChild(categoryHeader);
+				this._lines += 1;
+				this._extraHeight += 4; // Account for the 4px margin-top
+
+				// Add sub-problems under this category
+				for (const resourceMarker of categoryGroup.problems) {
+					const container = document.createElement('div');
+					container.style.marginLeft = '16px'; // Indent sub-problems
+
+					const subResource = document.createElement('a');
+					subResource.classList.add('filename');
+					subResource.innerText = `${this._labelService.getUriBasenameLabel(resourceMarker.resource)}(${resourceMarker.marker.startLineNumber}, ${resourceMarker.marker.startColumn}): `;
+					subResource.title = this._labelService.getUriLabel(resourceMarker.resource);
+					// Create a related information object from the resource marker
+					const relatedInfo: IRelatedInformation = {
+						resource: resourceMarker.resource,
+						message: resourceMarker.marker.message,
+						startLineNumber: resourceMarker.marker.startLineNumber,
+						startColumn: resourceMarker.marker.startColumn,
+						endLineNumber: resourceMarker.marker.endLineNumber,
+						endColumn: resourceMarker.marker.endColumn
+					};
+					this._relatedDiagnostics.set(subResource, relatedInfo);
+
+					const subMessage = document.createElement('span');
+					subMessage.innerText = resourceMarker.marker.message;
+
+					container.appendChild(subResource);
+					container.appendChild(subMessage);
+
+					this._lines += 1;
+					subProblemsNode.appendChild(container);
+				}
+			}
+		}
+
 		const fontInfo = this._editor.getOption(EditorOption.fontInfo);
 		const scrollWidth = Math.ceil(fontInfo.typicalFullwidthCharacterWidth * this._longestLineLength * 0.75);
-		const scrollHeight = fontInfo.lineHeight * this._lines;
+		const scrollHeight = fontInfo.lineHeight * this._lines + this._extraHeight;
 		this._scrollable.setScrollDimensions({ scrollWidth, scrollHeight });
 	}
 

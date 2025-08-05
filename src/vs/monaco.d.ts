@@ -1474,6 +1474,10 @@ declare namespace monaco.editor {
 		resourceSequenceNumber: number;
 		modelVersionId?: number;
 		relatedInformation?: IRelatedInformation[];
+		subProblems?: Array<{
+			category: string;
+			problems: IResourceMarker[];
+		}>;
 		tags?: MarkerTag[];
 		origin?: string | undefined;
 	}
@@ -1497,8 +1501,17 @@ declare namespace monaco.editor {
 		resourceSequenceNumber: number;
 		modelVersionId?: number;
 		relatedInformation?: IRelatedInformation[];
+		subProblems?: Array<{
+			category: string;
+			problems: IResourceMarker[];
+		}>;
 		tags?: MarkerTag[];
 		origin?: string | undefined;
+	}
+
+	export interface IResourceMarker {
+		resource: Uri;
+		marker: IMarkerData;
 	}
 
 	/**
