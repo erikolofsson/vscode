@@ -818,7 +818,7 @@ class AdvancedLineMatcher extends AbstractLineMatcher {
 		state: IPatternProcessingState,
 	): { needMoreLines: boolean; failed: boolean } {
 		// Initialize data with first pattern's kind if not inherited
-		if (patterns.length > 0 && !state.data.kind) {
+		if (patterns.length > 0 && state.data.kind === undefined) {
 			state.data.kind = patterns[0].kind;
 		}
 
@@ -926,9 +926,8 @@ class AdvancedLineMatcher extends AbstractLineMatcher {
 			state.commitCurrentData();
 
 			// Switch to sub-problem mode and create new data object
-			const originalKind = state.data.kind;
 			state.data = Object.create(null);
-			state.data.kind = originalKind;
+			state.data.kind = pattern.kind;
 
 			const currentCategory = state.currentCategory;
 
