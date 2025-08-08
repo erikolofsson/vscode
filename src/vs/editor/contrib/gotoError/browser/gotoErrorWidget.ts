@@ -207,10 +207,12 @@ class MessageWidget {
 					const container = document.createElement('div');
 					container.style.marginLeft = '16px'; // Indent sub-problems
 
+					const fileLabel = `${this._labelService.getUriBasenameLabel(resourceMarker.resource)}(${resourceMarker.marker.startLineNumber}, ${resourceMarker.marker.startColumn}): `;
 					const subResource = document.createElement('a');
 					subResource.classList.add('filename');
-					subResource.innerText = `${this._labelService.getUriBasenameLabel(resourceMarker.resource)}(${resourceMarker.marker.startLineNumber}, ${resourceMarker.marker.startColumn}): `;
+					subResource.innerText = fileLabel;
 					subResource.title = this._labelService.getUriLabel(resourceMarker.resource);
+
 					// Create a related information object from the resource marker
 					const relatedInfo: IRelatedInformation = {
 						resource: resourceMarker.resource,
@@ -228,7 +230,26 @@ class MessageWidget {
 					container.appendChild(subResource);
 					container.appendChild(subMessage);
 
-					this._lines += 1;
+					// Count lines correctly for multi-line messages.
+					// The first rendered line for this entry is the filename + first message line (already counted below as 1),
+					// additional lines come from the remaining message lines.
+					const messageLines = splitLines(resourceMarker.marker.message);
+					const additionalLines = Math.max(0, messageLines.length - 1);
+					this._lines += 1 + additionalLines;
+
+					// Update longest line length to ensure horizontal scrolling accounts for these lines.
+					const labelLength = fileLabel.length;
+					if (messageLines.length > 0) {
+						// first line includes label length
+						this._longestLineLength = Math.max(this._longestLineLength, labelLength + messageLines[0].length);
+						// remaining lines are just message content
+						for (let i = 1; i < messageLines.length; i++) {
+							this._longestLineLength = Math.max(this._longestLineLength, messageLines[i].length);
+						}
+					} else {
+						this._longestLineLength = Math.max(this._longestLineLength, labelLength);
+					}
+
 					subProblemsNode.appendChild(container);
 				}
 			}
