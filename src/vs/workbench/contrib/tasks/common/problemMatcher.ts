@@ -798,6 +798,22 @@ class AdvancedLineMatcher extends AbstractLineMatcher {
 			}
 			(mainMatch as IProblemMatch).marker.subProblems = subProblemsArray;
 		}
+		/*
+				{
+					const state: IPatternProcessingState = {
+						lines,
+						start,
+						currentLineIndex: 0,
+						totalConsumedLines: 0,
+						currentCategory: 'Other',
+						subProblems: [],
+						data: Object.create(null),
+						commitCurrentData: () => { }
+					};
+					const result = this.processPatterns(this.patterns, state);
+		
+					console.log(result.failed);
+				}*/
 
 		return {
 			match: mainMatch,
