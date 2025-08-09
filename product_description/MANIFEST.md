@@ -18,6 +18,13 @@ Top-level theme index (first pass)
   - Theme file: [`product_description/themes/editor.md`](product_description/themes/editor.md:1)
 - Workbench (views, panels, layout, window management)
   - Theme file: [`product_description/themes/workbench.md`](product_description/themes/workbench.md:1)
+  - Features:
+    - Views & Viewlets — [`product_description/features/workbench/views_and_viewlets.md`](product_description/features/workbench/views_and_viewlets.md:1)
+    - Panels & Layout — [`product_description/features/workbench/panels_and_layout.md`](product_description/features/workbench/panels_and_layout.md:1)
+    - Sidebar & Titlebar — [`product_description/features/workbench/sidebar_and_titlebar.md`](product_description/features/workbench/sidebar_and_titlebar.md:1)
+    - Sidebar & Activity Bar — [`product_description/features/workbench/sidebar_and_activitybar.md`](product_description/features/workbench/sidebar_and_activitybar.md:1)
+    - Activity Bar (icons, badges, drag & drop) — [`product_description/features/workbench/activity_bar.md`](product_description/features/workbench/activity_bar.md:1)
+    - Status Bar & Notifications — [`product_description/features/workbench/statusbar_and_notifications.md`](product_description/features/workbench/statusbar_and_notifications.md:1)
 - Extensions and extension host
   - Theme file: [`product_description/themes/extensions.md`](product_description/themes/extensions.md:1)
 - CLI, packaging, and scripts
