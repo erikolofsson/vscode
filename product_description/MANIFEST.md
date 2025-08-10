@@ -24,6 +24,8 @@ Top-level theme index (first pass)
     - Sidebar & Titlebar — [`product_description/features/workbench/sidebar_and_titlebar.md`](product_description/features/workbench/sidebar_and_titlebar.md:1)
     - Sidebar & Activity Bar — [`product_description/features/workbench/sidebar_and_activitybar.md`](product_description/features/workbench/sidebar_and_activitybar.md:1)
     - Activity Bar (icons, badges, drag & drop) — [`product_description/features/workbench/activity_bar.md`](product_description/features/workbench/activity_bar.md:1)
+    - Sidebar, Panel & Views — [`product_description/features/workbench/sidebar_panel_and_views.md`](product_description/features/workbench/sidebar_panel_and_views.md:1)
+    - Workbench Adapters & Host Shims — [`product_description/src_adapters/workbench_adapters.md`](product_description/src_adapters/workbench_adapters.md:1)
     - Status Bar & Notifications — [`product_description/features/workbench/statusbar_and_notifications.md`](product_description/features/workbench/statusbar_and_notifications.md:1)
 - Extensions and extension host
   - Theme file: [`product_description/themes/extensions.md`](product_description/themes/extensions.md:1)
